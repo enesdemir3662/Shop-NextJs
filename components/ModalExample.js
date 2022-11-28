@@ -1,12 +1,27 @@
 import React, { useDebugValue, useState, useEffect, useContext } from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import FileImg from "./FileImg";
+import Stack from "@mui/material/Stack";
 import { useContextApi } from "../Context/contextApi";
 import toast from "react-hot-toast";
-
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
 function ModelExample() {
   const {
     allProducts,
@@ -133,11 +148,16 @@ function ModelExample() {
   };
   return (
     <div>
-      <Modal isOpen={editModal || addModal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>
-          {inputValues.name == undefined ? "Ürün Ekle" : "Düzenleme"}
-        </ModalHeader>
-        <ModalBody>
+      <Modal
+        open={editModal || addModal}
+        onClose={toggle}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: 500 }}>
+          <h2 id="parent-modal-title">
+            {inputValues.name == undefined ? "Ürün Ekle" : "Düzenleme"}
+          </h2>
           <br />
           <input
             name="productName"
@@ -168,7 +188,7 @@ function ModelExample() {
             }
           />
           <br />
-          <FormControl sx={{ minWidth: 120 }} style={{ width: "465px" }}>
+          <FormControl sx={{ minWidth: 120 }} style={{ width: "430px" }}>
             <Select
               value={
                 inputValues.category != undefined ? inputValues.category : age
@@ -207,22 +227,26 @@ function ModelExample() {
             setTextModal={setTextModal}
             image={inputValues.img != undefined ? inputValues.img : ""}
           />
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={toggle}>
-            Kapat
-          </Button>
-          {inputValues.name != undefined ? (
-            <Button color="danger" onClick={productDelete}>
-              Ürünü Sil
+          <Stack spacing={2} direction="row">
+            <Button color="secondary" variant="contained" onClick={toggle}>
+              Kapat
             </Button>
-          ) : (
-            ""
-          )}
-          <Button color="primary" onClick={() => saveModal()}>
-            Kaydet
-          </Button>
-        </ModalFooter>
+            {inputValues.name != undefined ? (
+              <Button color="error" variant="contained" onClick={productDelete}>
+                Ürünü Sil
+              </Button>
+            ) : (
+              ""
+            )}
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => saveModal()}
+            >
+              Kaydet
+            </Button>
+          </Stack>
+        </Box>
       </Modal>
     </div>
   );

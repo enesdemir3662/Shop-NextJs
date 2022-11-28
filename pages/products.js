@@ -1,17 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Card,
-  CardText,
-  CardTitle,
-  Button,
-  CardBody,
-  CardSubtitle,
-  Row,
-  Col,
-} from "reactstrap";
 import { useContextApi } from "../Context/contextApi";
+
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
+import Grid from "@mui/material/Grid";
+
 const products = () => {
   const {
     allProducts,
@@ -102,20 +101,25 @@ const products = () => {
 
   return (
     <div>
-      <Row>
+      <Grid container spacing={2}>
         {windowControl &&
           newProducts.map((product, idx) => (
-            <Col xs="3" key={idx}>
-              <Card style={{ maxWidth: "18rem", maxHeight: "35rem" }}>
-                <img alt="Sample" src={product.productImg} />
-                <CardBody>
-                  <CardTitle tag="h5">{product.productName}</CardTitle>
-                  {product.productPrice + " ₺"}
-                  <CardSubtitle
-                    className="mb-2 text-muted"
-                    tag="h6"
-                  ></CardSubtitle>
-                  <CardText>{product.productInfo}</CardText>
+            <Grid item xs={4}>
+              <Card sx={{ maxWidth: 345 }}>
+                <CardMedia
+                  component="img"
+                  alt="green iguana"
+                  image={product.productImg}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {product.productPrice + " ₺"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {product.productInfo}
+                  </Typography>
+                </CardContent>
+                <CardActions>
                   <Button
                     className="btn btn-success"
                     onClick={() => addBasket(product)}
@@ -134,12 +138,12 @@ const products = () => {
                   ) : (
                     ""
                   )}
-                </CardBody>
+                </CardActions>
               </Card>
-            </Col>
+            </Grid>
           ))}
         ;
-      </Row>
+      </Grid>
     </div>
   );
 };

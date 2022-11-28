@@ -32,8 +32,12 @@ export default function Profile() {
                     />
                   </div>
                   <div className="flex-grow-1 ms-3">
-                    <MDBCardTitle>{user.email}</MDBCardTitle>
-                    <MDBCardText>{user.password}</MDBCardText>
+                    <MDBCardTitle>
+                      {user !== null ? user.email : ""}
+                    </MDBCardTitle>
+                    <MDBCardText>
+                      {user !== null ? user.password : ""}
+                    </MDBCardText>
                   </div>
                 </div>
               </MDBCardBody>

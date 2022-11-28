@@ -130,3 +130,6 @@ button {
   top: 0;
   width: 100%;
 }
+.centerDiv {
+    text-align: center;
+}

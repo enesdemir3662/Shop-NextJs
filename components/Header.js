@@ -1,22 +1,72 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  Button,
-  Badge,
-  Dropdown,
-  DropdownItem,
-  DropdownToggle,
-  DropdownMenu,
-} from "reactstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import Router, { useRouter } from "next/router";
 import { useContextApi } from "../Context/contextApi";
 import { v4 as uuidv4 } from "uuid";
 import ModalExample from "../components/ModalExample";
 
-const Header = () => {
+//Material UI import
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import { styled, alpha } from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+function ResponsiveAppBar() {
   const {
     productSearch,
     setProductSearch,
@@ -30,22 +80,38 @@ const Header = () => {
     editModal,
     addModal,
   } = useContextApi();
-  const [searchText, setSearchText] = useState("");
+
   const router = useRouter();
-  let [active, setActive] = useState(1);
-  const [dropdownOpen, setDropdownOpen] = useState([false, false]);
+
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const [searchText, setSearchText] = useState("");
   const [windowControl, setWindowControl] = useState(false);
 
   useEffect(() => {
-    router.pathname === "/home" ? setActive(1) : setActive(2);
     if (typeof window !== "undefined") {
       setWindowControl(true);
     }
   }, []);
-
-  useEffect(() => {
-    router.pathname === "/home" ? setActive(1) : setActive(2);
-  }, [router.pathname]);
 
   useEffect(() => {
     if (searchText != "") {
@@ -62,153 +128,187 @@ const Header = () => {
     }
   }, [searchText]);
 
-  const controlActive = (page, number) => {
-    setActive(number);
-    Router.push(page);
-  };
   const page = (category) => {
     setCategory(category);
     Router.push("/products");
   };
 
   return (
-    <div>
+    <>
       {(editModal || addModal) && <ModalExample />}
       {windowControl && (
-        <header className="p-3 mb-3 border-bottom">
-          <Nav tabs>
-            <NavItem>
-              <NavLink
-                active={active == 1 ? true : false}
-                onClick={() => controlActive("/", 1)}
+        <AppBar position="static">
+          <Container maxWidth="xl">
+            <Toolbar disableGutters>
+              <Typography
+                variant="h6"
+                component="a"
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+                onClick={() => Router.push("/")}
               >
-                Ana Sayfa
-              </NavLink>
-            </NavItem>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen[0]}
-              toggle={() =>
-                setDropdownOpen([!dropdownOpen[0], dropdownOpen[1]])
-              }
-            >
-              <DropdownToggle nav caret>
-                Ürünler
-              </DropdownToggle>
-              <DropdownMenu style={{ margin: 0 }}>
-                {allCategory.map((val) => {
-                  return (
-                    <DropdownItem onClick={() => page(val.key)} key={uuidv4()}>
-                      {val.name}
-                    </DropdownItem>
-                  );
-                })}
-              </DropdownMenu>
-            </Dropdown>
-            {user === null
-              ? ""
-              : user.admin === "yes" && (
-                  <div className="ms-5">
+                AnaSayfa
+              </Typography>
+              <Box className="ms-5">
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? "basic-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={(event) => setAnchorEl(event.currentTarget)}
+                  variant="contained"
+                  color="info"
+                >
+                  Ürünler
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                  }}
+                >
+                  {allCategory.map((val) => {
+                    return (
+                      <MenuItem
+                        onClick={() => {
+                          page(val.key);
+                          handleClose();
+                        }}
+                        key={uuidv4()}
+                      >
+                        {val.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Menu>
+              </Box>
+              {user === null
+                ? ""
+                : user.admin === "yes" && (
                     <Button
-                      color="primary"
+                      color="secondary"
                       outline
+                      variant="contained"
                       onClick={() => setAddModal(true)}
+                      className="ms-4"
                     >
                       Ürün Ekle
                     </Button>
+                  )}
+              <Box sx={{ flexGrow: 1 }} />
+              <MenuItem onClick={() => Router.push("/basket")}>
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                >
+                  <Badge badgeContent={basketCount} color="error">
+                    <ShoppingBasketIcon />
+                  </Badge>
+                </IconButton>
+              </MenuItem>
+              <Stack spacing={3} direction="row" className="mt-3 mb-3">
+                <Search>
+                  <SearchIconWrapper>
+                    <SearchIcon />
+                  </SearchIconWrapper>
+                  <StyledInputBase
+                    placeholder="Ara…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={(e) => setSearchText(e.target.value)}
+                  />
+                </Search>
+                {!user && (
+                  <div>
+                    <Button
+                      style={{
+                        width: "6.5rem",
+                        marginLeft: "5px",
+                      }}
+                      variant="contained"
+                      color="success"
+                      onClick={() => {
+                        setUser(null);
+                        Router.push("/login");
+                      }}
+                    >
+                      Giriş Yap
+                    </Button>
                   </div>
                 )}
-            <form
-              className="d-flex"
-              style={{ marginLeft: "auto", marginBottom: "10px" }}
-            >
-              <input
-                name="search"
-                placeholder="Ara"
-                className="form-control"
-                type="text"
-                onChange={(e) => setSearchText(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    console.log("enter a basıldı");
-                  }
-                }}
-              />
-            </form>
-            <div className="ms-5">
-              <Button
-                color="primary"
-                outline
-                onClick={() => Router.push("/basket")}
-              >
-                Sepet <Badge>{basketCount}</Badge>
-              </Button>
-            </div>
-            {!user && (
-              <div>
-                <Button
-                  style={{
-                    width: "6.5rem",
-                    color: "#fff",
-                    marginLeft: "5px",
-                  }}
-                  onClick={() => {
-                    setUser(null);
-                    Router.push("/login");
-                  }}
-                >
-                  Giriş Yap
-                </Button>
-              </div>
-            )}
-            {user && (
-              <Dropdown
-                nav
-                isOpen={dropdownOpen[1]}
-                toggle={() =>
-                  setDropdownOpen([dropdownOpen[0], !dropdownOpen[1]])
-                }
-              >
-                <DropdownToggle nav caret>
-                  <img
-                    src="https://github.com/mdo.png"
-                    alt="noway"
-                    style={{ width: 32, height: 32 }}
-                    className="rounded-circle"
-                  />
-                </DropdownToggle>
-                <DropdownMenu style={{ margin: 0, minWidth: "300px" }}>
-                  <DropdownItem>
-                    <div
-                      className="price input-group-text"
-                      style={{ height: "45px" }}
+                {user && (
+                  <Box sx={{ flexGrow: 0 }}>
+                    <Tooltip title="Open settings">
+                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                        <Avatar
+                          alt="Remy Sharp"
+                          src="/static/images/avatar/2.jpg"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                    <Menu
+                      sx={{ mt: "45px" }}
+                      id="menu-appbar"
+                      anchorEl={anchorElUser}
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      open={Boolean(anchorElUser)}
+                      onClose={handleCloseUserMenu}
                     >
-                      <span className="input-group-text">$</span>
-                      <p className="ms-5 mt-3 black-text">{user.money}</p>
-                    </div>
-                  </DropdownItem>
-                  <DropdownItem
-                    style={{ fontSize: "18px", width: "100%" }}
-                    onClick={() => Router.push("/profile")}
-                  >
-                    Profil
-                  </DropdownItem>
-                  <DropdownItem
-                    style={{ fontSize: "15px", color: "red", width: "100%" }}
-                    onClick={() => {
-                      setUser(null);
-                      Router.push("/login");
-                    }}
-                  >
-                    Çıkış Yap
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            )}
-          </Nav>
-        </header>
+                      <MenuItem>
+                        <div
+                          className="price input-group-text"
+                          style={{ height: "45px", width: "300px" }}
+                        >
+                          <span className="input-group-text">$</span>
+                          <p className="ms-5 mt-3 black-text">{user.money}</p>
+                        </div>
+                      </MenuItem>
+                      <MenuItem
+                        style={{ fontSize: "18px", width: "100%" }}
+                        onClick={() => Router.push("/profile")}
+                      >
+                        Profil
+                      </MenuItem>
+                      <MenuItem
+                        style={{
+                          fontSize: "15px",
+                          color: "red",
+                          width: "100%",
+                        }}
+                        onClick={() => {
+                          setUser(null);
+                          Router.push("/login");
+                        }}
+                      >
+                        Çıkış Yap
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                )}
+              </Stack>
+            </Toolbar>
+          </Container>
+        </AppBar>
       )}
-    </div>
+    </>
   );
-};
-export default Header;
+}
+export default ResponsiveAppBar;

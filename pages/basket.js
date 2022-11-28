@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import toast from "react-hot-toast";
-import { Table, Button } from "reactstrap";
+import Button from "@mui/material/Button";
+import Table from "@mui/material/Table";
 import { useContextApi } from "../Context/contextApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 function Basket() {
@@ -68,8 +69,8 @@ function Basket() {
   };
 
   return (
-    <div>
-      <Table hover>
+    <div className="centerDiv">
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <thead>
           <tr>
             <th>#</th>
@@ -88,7 +89,11 @@ function Basket() {
                 <td>{product.piece}</td>
                 <td>{parseInt(product.piece) * parseInt(product.price)}</td>
                 <td>
-                  <Button color="danger" onClick={() => removeBasket(product)}>
+                  <Button
+                    color="error"
+                    variant="contained"
+                    onClick={() => removeBasket(product)}
+                  >
                     <DeleteIcon />
                   </Button>
                 </td>
@@ -99,6 +104,7 @@ function Basket() {
       </Table>
       <Button
         color="primary"
+        variant="contained"
         className="ms-1 mt-3"
         style={{ width: "120px" }}
         onClick={() => resetBasket()}
@@ -107,6 +113,7 @@ function Basket() {
       </Button>
       <Button
         color="success"
+        variant="contained"
         className="ms-5 mt-3"
         style={{ width: "120px" }}
         onClick={() => BuyBasket()}
