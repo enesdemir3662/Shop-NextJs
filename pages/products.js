@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { useContextApi } from "../Context/contextApi";
 
 import Card from "@mui/material/Card";
@@ -36,13 +35,18 @@ const products = () => {
     }
   }, []);
 
-  useEffect(() => {
+  const categoryFilter = () => {
     if (category !== null) {
       let newProducts_ = allProducts.filter((product) => {
         return product.productCategory === category;
       });
+      console.log(newProducts_);
       setNewProducts(newProducts_);
     }
+  };
+
+  useEffect(() => {
+    categoryFilter();
     if (productSearch.length != 0) {
       setNewProducts(productSearch);
     }
@@ -50,6 +54,7 @@ const products = () => {
 
   useEffect(() => {
     setNewProducts(allProducts);
+    categoryFilter();
     setWindowControl(false);
     setWindowControl(true);
   }, [allProducts]);
@@ -101,10 +106,11 @@ const products = () => {
 
   return (
     <div>
+      <br />
       <Grid container spacing={2}>
         {windowControl &&
           newProducts.map((product, idx) => (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={idx}>
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                   component="img"
@@ -123,7 +129,9 @@ const products = () => {
                   <Button
                     className="btn btn-success"
                     onClick={() => addBasket(product)}
+                    variant="contained"
                   >
+                    {" "}
                     Sepete Ekle
                   </Button>
                   {user == null ? (

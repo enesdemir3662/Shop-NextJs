@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import FileImg from "./FileImg";
 import Stack from "@mui/material/Stack";
@@ -159,36 +160,44 @@ function ModelExample() {
             {inputValues.name == undefined ? "Ürün Ekle" : "Düzenleme"}
           </h2>
           <br />
-          <input
-            name="productName"
-            type="text"
-            placeholder="Ürün Adı"
-            onChange={(e) => onChange(e.target.value, "productName")}
-            className={"form-control"}
+
+          <TextField
+            label="Ürün Adı"
+            id="outlined-size-small"
+            className="input-height mt-5"
             defaultValue={inputValues.name != undefined ? inputValues.name : ""}
-          />
-          <br />
-          <input
-            name="productInfo"
+            size="small"
             type="text"
-            placeholder="Ürün Bilgisi"
-            onChange={(e) => onChange(e.target.value, "productInfo")}
-            className={"form-control"}
-            defaultValue={inputValues.info != undefined ? inputValues.info : ""}
+            name="productName"
+            onChange={(e) => onChange(e.target.value, "productName")}
           />
-          <br />
-          <input
-            name="productPrice"
-            type="number"
-            placeholder="Ürün Fiyatı"
-            onChange={(e) => onChange(e.target.value, "productPrice")}
-            className={"form-control"}
+          <TextField
+            label="Ürün Bilgisi"
+            id="outlined-size-small"
+            className="input-height mt-5"
+            defaultValue={inputValues.info != undefined ? inputValues.info : ""}
+            size="small"
+            type="text"
+            name="productInfo"
+            onChange={(e) => onChange(e.target.value, "productInfo")}
+          />
+          <TextField
+            label="Ürün Fiyatı"
+            id="outlined-size-small"
+            className="input-height mt-5"
             defaultValue={
               inputValues.price != undefined ? inputValues.price : ""
             }
+            size="small"
+            type="number"
+            name="productPrice"
+            onChange={(e) => onChange(e.target.value, "productPrice")}
           />
-          <br />
-          <FormControl sx={{ minWidth: 120 }} style={{ width: "430px" }}>
+          <FormControl
+            sx={{ minWidth: 120 }}
+            style={{ width: "430px" }}
+            className="mt-5"
+          >
             <Select
               value={
                 inputValues.category != undefined ? inputValues.category : age
@@ -223,10 +232,12 @@ function ModelExample() {
               </MenuItem>
             </Select>
           </FormControl>
-          <FileImg
-            setTextModal={setTextModal}
-            image={inputValues.img != undefined ? inputValues.img : ""}
-          />
+          <div className="mt-5 mb-5">
+            <FileImg
+              setTextModal={setTextModal}
+              image={inputValues.img != undefined ? inputValues.img : ""}
+            />
+          </div>
           <Stack spacing={2} direction="row">
             <Button color="secondary" variant="contained" onClick={toggle}>
               Kapat

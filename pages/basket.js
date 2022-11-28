@@ -70,6 +70,7 @@ function Basket() {
 
   return (
     <div className="centerDiv">
+      <br />
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <thead>
           <tr>
@@ -102,10 +103,12 @@ function Basket() {
           })}
         </tbody>
       </Table>
+      <br />
+
       <Button
         color="primary"
         variant="contained"
-        className="ms-1 mt-3"
+        className="ms-3 mt-3"
         style={{ width: "120px" }}
         onClick={() => resetBasket()}
       >

@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Header";
 import React, { useState } from "react";
 import { useRouter } from "next/router";

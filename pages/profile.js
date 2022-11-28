@@ -22,8 +22,8 @@ export default function Profile() {
           <MDBCol md="9" lg="7" xl="5" className="mt-5">
             <MDBCard style={{ borderRadius: "15px" }}>
               <MDBCardBody className="p-4">
-                <div className="d-flex text-black">
-                  <div className="flex-shrink-0">
+                <div className="d-flex">
+                  <div>
                     <MDBCardImage
                       style={{ width: "180px", borderRadius: "10px" }}
                       src="https://github.com/mdo.png"
@@ -31,11 +31,14 @@ export default function Profile() {
                       fluid
                     />
                   </div>
-                  <div className="flex-grow-1 ms-3">
-                    <MDBCardTitle>
+                  <div
+                    className="center ml-5 mt-5"
+                    style={{ justifyContent: "center", display: "flex" }}
+                  >
+                    <MDBCardTitle className="text-bold">
                       {user !== null ? user.email : ""}
                     </MDBCardTitle>
-                    <MDBCardText>
+                    <MDBCardText className="text-bold">
                       {user !== null ? user.password : ""}
                     </MDBCardText>
                   </div>

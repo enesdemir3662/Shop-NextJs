@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContextApi } from "../Context/contextApi";
-
+import TextField from "@mui/material/TextField";
 const schema = yup.object().shape({
   email: yup
     .string("Geçersiz Değer Girdin")
@@ -102,12 +102,12 @@ export default function login() {
             name="email"
             control={control}
             render={({ field: { onChange, value, ref } }) => (
-              <input
-                type="text"
-                placeholder="email..."
-                variant="outlined"
-                value={value}
-                className="form-control"
+              <TextField
+                label="E-mail"
+                id="outlined-size-small"
+                defaultValue={value}
+                size="small"
+                type="email"
                 onChange={onChange}
               />
             )}
@@ -122,12 +122,12 @@ export default function login() {
             name="password"
             control={control}
             render={({ field: { onChange, value, ref } }) => (
-              <input
+              <TextField
+                label="Şifre"
+                id="outlined-size-small"
+                defaultValue={value}
+                size="small"
                 type="password"
-                placeholder="Şifre..."
-                variant="outlined"
-                value={value}
-                className="form-control"
                 onChange={onChange}
               />
             )}

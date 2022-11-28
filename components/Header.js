@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Router, { useRouter } from "next/router";
 import { useContextApi } from "../Context/contextApi";
 import { v4 as uuidv4 } from "uuid";
@@ -117,8 +116,10 @@ function ResponsiveAppBar() {
     if (searchText != "") {
       let newProducts = allProducts.filter((product) => {
         return (
-          product.productName.includes(searchText) ||
-          product.productInfo.includes(searchText)
+          product.productName
+            .toLowerCase()
+            .includes(searchText.toLowerCase()) ||
+          product.productInfo.toLowerCase().includes(searchText.toLowerCase())
         );
       });
       setProductSearch(newProducts);
@@ -137,176 +138,179 @@ function ResponsiveAppBar() {
     <>
       {(editModal || addModal) && <ModalExample />}
       {windowControl && (
-        <AppBar position="static">
-          <Container maxWidth="xl">
-            <Toolbar disableGutters>
-              <Typography
-                variant="h6"
-                component="a"
-                sx={{
-                  mr: 2,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-                onClick={() => Router.push("/")}
-              >
-                AnaSayfa
-              </Typography>
-              <Box className="ms-5">
-                <Button
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                  onClick={(event) => setAnchorEl(event.currentTarget)}
-                  variant="contained"
-                  color="info"
-                >
-                  Ürünler
-                </Button>
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
+        <>
+          <AppBar position="static">
+            <Container maxWidth="xl">
+              <Toolbar disableGutters>
+                <Typography
+                  variant="h6"
+                  component="a"
+                  sx={{
+                    mr: 2,
+                    display: { xs: "none", md: "flex" },
+                    fontFamily: "monospace",
+                    fontWeight: 700,
+                    letterSpacing: ".3rem",
+                    color: "inherit",
+                    textDecoration: "none",
                   }}
+                  onClick={() => Router.push("/")}
                 >
-                  {allCategory.map((val) => {
-                    return (
-                      <MenuItem
-                        onClick={() => {
-                          page(val.key);
-                          handleClose();
-                        }}
-                        key={uuidv4()}
-                      >
-                        {val.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Menu>
-              </Box>
-              {user === null
-                ? ""
-                : user.admin === "yes" && (
-                    <Button
-                      color="secondary"
-                      outline
-                      variant="contained"
-                      onClick={() => setAddModal(true)}
-                      className="ms-4"
-                    >
-                      Ürün Ekle
-                    </Button>
-                  )}
-              <Box sx={{ flexGrow: 1 }} />
-              <MenuItem onClick={() => Router.push("/basket")}>
-                <IconButton
-                  size="large"
-                  aria-label="show 4 new mails"
-                  color="inherit"
-                >
-                  <Badge badgeContent={basketCount} color="error">
-                    <ShoppingBasketIcon />
-                  </Badge>
-                </IconButton>
-              </MenuItem>
-              <Stack spacing={3} direction="row" className="mt-3 mb-3">
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Ara…"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={(e) => setSearchText(e.target.value)}
-                  />
-                </Search>
-                {!user && (
-                  <div>
-                    <Button
-                      style={{
-                        width: "6.5rem",
-                        marginLeft: "5px",
-                      }}
-                      variant="contained"
-                      color="success"
-                      onClick={() => {
-                        setUser(null);
-                        Router.push("/login");
-                      }}
-                    >
-                      Giriş Yap
-                    </Button>
-                  </div>
-                )}
-                {user && (
-                  <Box sx={{ flexGrow: 0 }}>
-                    <Tooltip title="Open settings">
-                      <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar
-                          alt="Remy Sharp"
-                          src="/static/images/avatar/2.jpg"
-                        />
-                      </IconButton>
-                    </Tooltip>
-                    <Menu
-                      sx={{ mt: "45px" }}
-                      id="menu-appbar"
-                      anchorEl={anchorElUser}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      open={Boolean(anchorElUser)}
-                      onClose={handleCloseUserMenu}
-                    >
-                      <MenuItem>
-                        <div
-                          className="price input-group-text"
-                          style={{ height: "45px", width: "300px" }}
+                  AnaSayfa
+                </Typography>
+                <Box className="-">
+                  <Button
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={(event) => setAnchorEl(event.currentTarget)}
+                    variant="contained"
+                    color="info"
+                  >
+                    Ürünler
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    {allCategory.map((val) => {
+                      return (
+                        <MenuItem
+                          onClick={() => {
+                            page(val.key);
+                            handleClose();
+                          }}
+                          key={uuidv4()}
                         >
-                          <span className="input-group-text">$</span>
-                          <p className="ms-5 mt-3 black-text">{user.money}</p>
-                        </div>
-                      </MenuItem>
-                      <MenuItem
-                        style={{ fontSize: "18px", width: "100%" }}
-                        onClick={() => Router.push("/profile")}
+                          {val.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Menu>
+                </Box>
+                {user === null
+                  ? ""
+                  : user.admin === "yes" && (
+                      <Button
+                        color="secondary"
+                        outline
+                        variant="contained"
+                        onClick={() => setAddModal(true)}
+                        className="ml-4"
                       >
-                        Profil
-                      </MenuItem>
-                      <MenuItem
+                        Ürün Ekle
+                      </Button>
+                    )}
+                <Box sx={{ flexGrow: 1 }} />
+                <MenuItem onClick={() => Router.push("/basket")}>
+                  <IconButton
+                    size="large"
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                  >
+                    <Badge badgeContent={basketCount} color="error">
+                      <ShoppingBasketIcon />
+                    </Badge>
+                  </IconButton>
+                </MenuItem>
+                <Stack spacing={3} direction="row" className="mt-3 mb-3">
+                  <Search>
+                    <SearchIconWrapper>
+                      <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                      placeholder="Ara…"
+                      inputProps={{ "aria-label": "search" }}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                  </Search>
+                  {!user && (
+                    <div>
+                      <Button
                         style={{
-                          fontSize: "15px",
-                          color: "red",
-                          width: "100%",
+                          width: "6.5rem",
+                          marginLeft: "5px",
                         }}
+                        variant="contained"
+                        color="success"
                         onClick={() => {
                           setUser(null);
                           Router.push("/login");
                         }}
                       >
-                        Çıkış Yap
-                      </MenuItem>
-                    </Menu>
-                  </Box>
-                )}
-              </Stack>
-            </Toolbar>
-          </Container>
-        </AppBar>
+                        Giriş Yap
+                      </Button>
+                    </div>
+                  )}
+                  {user && (
+                    <Box sx={{ flexGrow: 0 }}>
+                      <Tooltip title="Open settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                          <Avatar
+                            alt="Remy Sharp"
+                            src="/static/images/avatar/2.jpg"
+                          />
+                        </IconButton>
+                      </Tooltip>
+                      <Menu
+                        sx={{ mt: "45px" }}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                      >
+                        <MenuItem>
+                          <div
+                            className=" center input-group border"
+                            style={{ width: "300px" }}
+                          >
+                            <p>
+                              {user.money} <span>$</span>
+                            </p>
+                          </div>
+                        </MenuItem>
+                        <MenuItem
+                          style={{ fontSize: "18px", width: "100%" }}
+                          onClick={() => Router.push("/profile")}
+                        >
+                          Profil
+                        </MenuItem>
+                        <MenuItem
+                          style={{
+                            fontSize: "15px",
+                            color: "red",
+                            width: "100%",
+                          }}
+                          onClick={() => {
+                            setUser(null);
+                            Router.push("/login");
+                          }}
+                        >
+                          Çıkış Yap
+                        </MenuItem>
+                      </Menu>
+                    </Box>
+                  )}
+                </Stack>
+              </Toolbar>
+            </Container>
+          </AppBar>
+        </>
       )}
     </>
   );

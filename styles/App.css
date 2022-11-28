@@ -1,3 +1,11 @@
+*,*::after,*::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
 .container-2 {
   width: 80%;
   height: 85vh;
@@ -132,4 +140,54 @@ button {
 }
 .centerDiv {
     text-align: center;
+}
+
+.mt-5{
+  margin-top: calc(1rem*.25*5) !important;
+}
+.mt-3{
+  margin-top: calc(1rem*.25*3) !important;
+}
+.ml-5{
+  margin-left: calc(1rem*.25*5) !important;
+}
+.ml-3{
+  margin-left: calc(1rem*.25*3) !important;
+}
+.ml-4{
+  margin-left: calc(1rem*.25*4) !important;
+}
+.mb-5{
+  margin-bottom: calc(1rem*.25*5) !important;
+}
+.mb-3{
+  margin-bottom: calc(1rem*.25*3) !important;
+}
+.ms-3{
+  margin-right: calc(1rem*.25*3) !important;
+}
+.ms-4{
+  margin-right: calc(1rem*.25*4) !important;
+}
+.ms-5{
+  margin-right: calc(1rem*.25*5) !important;
+}
+.input-height{
+  min-width: 120 ;
+  width: 430px;
+}
+.input-group{
+display: flex;
+}
+.border{
+  border: 5px ridge rgba(211, 220, 50, .6);
+}
+.d-flex{
+  display: flex;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.text-bold{
+  font-weight:bold;
 }
