@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import toast from "react-hot-toast";
-import Button from "@mui/material/Button";
-import Table from "@mui/material/Table";
+import { Button, Table } from "@mui/material";
 import { useContextApi } from "../Context/contextApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 function Basket() {

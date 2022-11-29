@@ -17,11 +17,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import { styled, alpha } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
+import { styled, alpha } from "@mui/material/styles";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import SearchIcon from "@mui/icons-material/Search";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
